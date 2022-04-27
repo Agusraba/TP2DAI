@@ -2,11 +2,11 @@ import sql from 'mssql'
 import config from '../../db.js'
 import 'dotenv/config'
 
-const personajeTabla = process.env.DB_TABLA_PERSOANJE;
+const personajeTabla = process.env.DB_TABLA_PERSONAJE;
 
 export class personajeService {
 
-    getpersonaje = async () => {
+    getPersonaje = async () => {
         console.log('This is a function on the service');
 
         const pool = await sql.connect(config);
@@ -28,16 +28,17 @@ export class personajeService {
         return response.recordset[0];
     }
 
-    createPersonaje = async (personaje) => {
+    createPersonaje = async (Personaje) => {
         console.log('This is a function on the service');
 
         const pool = await sql.connect(config);
         const response = await pool.request()
-            .input('Nombre',sql.NChar, personaje?.nombre ?? '')
-            .input('LibreGluten',sql.Bit, personaje?.libreGluten ?? false)
-            .input('Importe',sql.NChar, personaje?.importe ?? 0)
-            .input('Descripcion',sql.NChar, personaje?.description ?? '')
-            .query(`INSERT INTO ${personajeTabla}(Nombre, LibreGluten, Importe, Descripcion) VALUES (@Nombre, @LibreGluten, @Importe, @Descripcion)`);
+            .input('imagen',sql.VarChar, Personaje?.Imagen ?? '')
+            .input('nombre',sql.VarChar, Personaje?.Nombre ?? '')
+            .input('edad',sql.Int, Personaje?.Edad ?? 0)
+            .input('peso',sql.Float, Personaje?.Peso ?? 0)
+            .input('historia',sql.VarChar, Personaje?.Historia ?? '')
+            .query(`INSERT INTO ${personajeTabla}(Imagen, Nombre, Peso, Edad, Historia) VALUES (@imagen, @nombre, @peso, @edad, @historia)`);
         console.log(response)
 
         return response.recordset;
@@ -48,12 +49,13 @@ export class personajeService {
 
         const pool = await sql.connect(config);
         const response = await pool.request()
+            .input('imagen',sql.VarChar, personaje?.Imagen ?? '')
+            .input('nombre',sql.VarChar, personaje?.Nombre ?? '')
+            .input('edad',sql.Int, personaje?.Edad ?? 0)
+            .input('peso',sql.Float, personaje?.Peso ?? 0)
+            .input('historia',sql.VarChar, personaje?.Historia ?? '')
             .input('id',sql.Int, id)
-            .input('Nombre',sql.NChar, personaje?.nombre ?? '')
-            .input('LibreGluten',sql.Bit, personaje?.libreGluten ?? false)
-            .input('Importe',sql.NChar, personaje?.importe ?? 0)
-            .input('Descripcion',sql.NChar, personaje?.description ?? '')
-            .query(`UPDATE personajes SET Nombre = @Nombre, LibreGluten = @LibreGluten, Importe = @Importe, Descripcion = @Descripcion WHERE id = @Id`);
+            .query(`UPDATE Personajes SET Imagen = @imagen, Nombre = @nombre, Edad = @edad, Peso = @peso, Historia = @historia WHERE Id = @id`);
         console.log(response)
 
         return response.recordset;
