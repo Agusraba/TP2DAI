@@ -1,50 +1,73 @@
-import { Router } from 'express';
-import { PersonajeService } from '../services/personajeService.js';
+import sql from 'mssql'
+import config from '../../db.js'
+import 'dotenv/config'
 
-const router = Router();
-const personajeService = new PersonajeService();
+const personajeTabla = process.env.DB_TABLA_PERSOANJE;
 
-router.get('', async (req, res) => {
-  console.log(`This is a get operation`);
-  
-  const personajes = await personajeService.getPersonaje();
+export class personajeService {
 
-  return res.status(200).json(personajes);
-});
+    getpersonaje = async () => {
+        console.log('This is a function on the service');
 
-router.get('/:id', async (req, res) => {
-  console.log(`Request URL Param: ${req.params.id}`);
-  console.log(`This is a get operation`);
+        const pool = await sql.connect(config);
+        const response = await pool.request().query(`SELECT * from ${personajeTabla}`);
+        console.log(response)
 
-  const personaje = await personajeService.getPersonajeById(req.params.id);
+        return response.recordset;
+    }
 
-  return res.status(200).json(personaje);
-});
+    getPersonajeById = async (id) => {
+        console.log('This is a function on the service');
 
-router.post('', async (req, res) => {
-  console.log(`This is a post operation`);
+        const pool = await sql.connect(config);
+        const response = await pool.request()
+            .input('id',sql.Int, id)
+            .query(`SELECT * from ${personajeTabla} where id = @id`);
+        console.log(response)
 
-  const personaje = await personajeService.createPersonaje(req.body);
+        return response.recordset[0];
+    }
 
-  return res.status(201).json(personaje);
-});
+    createPersonaje = async (personaje) => {
+        console.log('This is a function on the service');
 
-router.put('/:id', async (req, res) => {
-  console.log(`Request URL Param: ${req.params.id}`);
-  console.log(`This is a put operation`);
+        const pool = await sql.connect(config);
+        const response = await pool.request()
+            .input('Nombre',sql.NChar, personaje?.nombre ?? '')
+            .input('LibreGluten',sql.Bit, personaje?.libreGluten ?? false)
+            .input('Importe',sql.NChar, personaje?.importe ?? 0)
+            .input('Descripcion',sql.NChar, personaje?.description ?? '')
+            .query(`INSERT INTO ${personajeTabla}(Nombre, LibreGluten, Importe, Descripcion) VALUES (@Nombre, @LibreGluten, @Importe, @Descripcion)`);
+        console.log(response)
 
-  const personaje = await personajeService.updatePersonajeById(req.body);
+        return response.recordset;
+    }
 
-  return res.status(200).json(personaje);
-});
+    updatePersonajeById = async (id, personaje) => {
+        console.log('This is a function on the service');
 
-router.delete('/:id', async (req, res) => {
-  console.log(`Request URL Param: ${req.params.id}`);
-  console.log(`This is a delete operation`);
+        const pool = await sql.connect(config);
+        const response = await pool.request()
+            .input('id',sql.Int, id)
+            .input('Nombre',sql.NChar, personaje?.nombre ?? '')
+            .input('LibreGluten',sql.Bit, personaje?.libreGluten ?? false)
+            .input('Importe',sql.NChar, personaje?.importe ?? 0)
+            .input('Descripcion',sql.NChar, personaje?.description ?? '')
+            .query(`UPDATE personajes SET Nombre = @Nombre, LibreGluten = @LibreGluten, Importe = @Importe, Descripcion = @Descripcion WHERE id = @Id`);
+        console.log(response)
 
-  const personaje = await personajeService.deletePersonajeById(req.params.id);
+        return response.recordset;
+    }
 
-  return res.status(200).json(personaje);
-});
+    deletePersonajeById = async (id) => {
+        console.log('This is a function on the service');
 
-export default router;
+        const pool = await sql.connect(config);
+        const response = await pool.request()
+            .input('id',sql.Int, id)
+            .query(`DELETE FROM ${personajeTabla} WHERE id = @id`);
+        console.log(response)
+
+        return response.recordset;
+    }
+}
