@@ -44,16 +44,16 @@ export class personajeService {
         return response.recordset;
     }
 
-    updatePersonajeById = async (id, personaje) => {
+    updatePersonajeById = async (id, Personaje) => {
         console.log('This is a function on the service');
 
         const pool = await sql.connect(config);
         const response = await pool.request()
-            .input('imagen',sql.VarChar, personaje?.Imagen ?? '')
-            .input('nombre',sql.VarChar, personaje?.Nombre ?? '')
-            .input('edad',sql.Int, personaje?.Edad ?? 0)
-            .input('peso',sql.Float, personaje?.Peso ?? 0)
-            .input('historia',sql.VarChar, personaje?.Historia ?? '')
+            .input('imagen',sql.VarChar, Personaje?.Imagen ?? '')
+            .input('nombre',sql.VarChar, Personaje?.Nombre ?? '')
+            .input('edad',sql.Int, Personaje?.Edad ?? 0)
+            .input('peso',sql.Float, Personaje?.Peso ?? 0)
+            .input('historia',sql.VarChar, Personaje?.Historia ?? '')
             .input('id',sql.Int, id)
             .query(`UPDATE Personajes SET Imagen = @imagen, Nombre = @nombre, Edad = @edad, Peso = @peso, Historia = @historia WHERE Id = @id`);
         console.log(response)
