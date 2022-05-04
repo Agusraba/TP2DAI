@@ -6,8 +6,11 @@ const PersonajeService = new personajeService();
 
 router.get('', async (req, res) => {
   console.log(`This is a get operation`);
+  console.log("Nombre: ", req.query.Nombre);
+  console.log("Edad: ", req.query.Edad);
+  const {Nombre, Edad} = req.query;
   
-  const personaje = await PersonajeService.getPersonaje();
+  const personaje = await PersonajeService.getPersonaje(Nombre, Edad);
 
   return res.status(200).json(personaje);
 });
@@ -43,6 +46,15 @@ router.delete('/:id', async (req, res) => {
   console.log(`This is a delete operation`);
 
   const personaje = await PersonajeService.deletePersonajeById(req.params.id);
+
+  return res.status(200).json(personaje);
+});
+
+router.get('/:nombre', async (req, res) => {
+  console.log(`Request URL Param: ${req.params.nombre}`);
+  console.log(`This is a get operation`);
+
+  const personaje = await PersonajeService.getPersonajeByEdad(req.params.nombre);
 
   return res.status(200).json(personaje);
 });

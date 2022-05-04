@@ -6,9 +6,9 @@ const personajeTabla = process.env.DB_TABLA_PERSONAJE;
 
 export class personajeService {
 
-    getPersonaje = async () => {
+    getPersonaje = async (nombre, edad) => {
         console.log('This is a function on the service');
-
+        console.log(nombre);
         const pool = await sql.connect(config);
         const response = await pool.request().query(`SELECT * from ${personajeTabla}`);
         console.log(response)
