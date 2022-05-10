@@ -6,11 +6,11 @@ const PersonajeService = new personajeService();
 
 router.get('', async (req, res) => {
   console.log(`This is a get operation`);
-  console.log("Nombre: ", req.query.Nombre);
-  console.log("Edad: ", req.query.Edad);
-  const {Nombre, Edad} = req.query;
+  console.log("Nombre: ", req.query.nombre);
+  console.log("Edad: ", req.query.edad);
+  const {nombre, edad} = req.query;
   
-  const personaje = await PersonajeService.getPersonaje(Nombre, Edad);
+  const personaje = await PersonajeService.getPersonaje(nombre, edad);
 
   return res.status(200).json(personaje);
 });
