@@ -8,10 +8,22 @@ export class personajeService {
 
     getPersonaje = async (nombre, edad) => {
         console.log('This is a function on the service');
-        console.log(nombre);
         const pool = await sql.connect(config);
-        const response = await pool.request().query(`SELECT * from ${personajeTabla}`);
-        console.log(response)
+        const response = await pool.request()
+        .input('Nombre',sql.VarChar, nombre)
+        .input('Edad',sql.VarChar, edad)
+        if(!nombre && edad){
+            response.query(`SELECT * from ${personajeTabla} where  Edad = @edad`);
+        }
+        else if(nombre && !edad){
+        response.query(`SELECT * from ${personajeTabla} where  Nombre = @nombre`);
+        }
+        else if(nombre == undefined && edad == undefined){
+        response.query(`SELECT * from ${personajeTabla} where  Edad = @edad and Nombre = @nombre `);
+        }
+        else{
+        response.query(`SELECT * from ${personajeTabla}`);
+        }
 
         return response.recordset;
     }
