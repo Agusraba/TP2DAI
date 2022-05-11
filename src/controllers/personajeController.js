@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { personajeService } from '../services/personajeService.js';
+import { Authenticate }from "../common/jwt.strategy.js";
 
 const router = Router();
 const PersonajeService = new personajeService();
 
-router.get('', async (req, res) => {
+router.get('', Authenticate, async (req, res) => {
   console.log(`This is a get operation`);
   console.log("Nombre: ", req.query.nombre);
   console.log("Edad: ", req.query.edad);
@@ -14,8 +15,15 @@ router.get('', async (req, res) => {
 
   return res.status(200).json(personaje);
 });
+router.get('/characters', Authenticate, async (req, res) => {
+  console.log(`This is a get operation`);
+  
+  const personaje = await PersonajeService.getPersonajeImaNomId();
 
-router.get('/:id', async (req, res) => {
+  return res.status(200).json(personaje);
+});
+
+router.get('/:id', Authenticate,  async (req, res) => {
   console.log(`Request URL Param: ${req.params.id}`);
   console.log(`This is a get operation`);
 
@@ -24,7 +32,7 @@ router.get('/:id', async (req, res) => {
   return res.status(200).json(personaje);
 });
 
-router.post('', async (req, res) => {
+router.post('', Authenticate,  async (req, res) => {
   console.log(`This is a post operation`);
 
   const personaje = await PersonajeService.createPersonaje(req.body);
@@ -32,7 +40,7 @@ router.post('', async (req, res) => {
   return res.status(201).json(personaje);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', Authenticate,  async (req, res) => {
   console.log(`Request URL Param: ${req.params.id}`);
   console.log(`This is a put operation`);
 
@@ -41,7 +49,7 @@ router.put('/:id', async (req, res) => {
   return res.status(200).json(personaje);
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', Authenticate,  async (req, res) => {
   console.log(`Request URL Param: ${req.params.id}`);
   console.log(`This is a delete operation`);
 
@@ -50,7 +58,7 @@ router.delete('/:id', async (req, res) => {
   return res.status(200).json(personaje);
 });
 
-router.get('/:nombre', async (req, res) => {
+router.get('/:nombre', Authenticate,  async (req, res) => {
   console.log(`Request URL Param: ${req.params.nombre}`);
   console.log(`This is a get operation`);
 
