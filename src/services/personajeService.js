@@ -41,6 +41,16 @@ export class personajeService {
     return response.recordset;
         
     }
+    getPersonajeConPelAsociada = async () => {
+        console.log('This is a function on the service');
+        const pool = await sql.connect(config);
+        const response = await pool.request()
+        .query(`SELECT * FROM ${personajeTabla}`)
+        
+        .query(`SELECT * FROM Peliculas.id=PeliculasxPersonaje.IdPeliculas and Personajes.id=PeliculasxPersonaje.IdPersonajes` );
+    console.log(response)
+        
+    }
 
     getPersonajeById = async (id) => {
         console.log('This is a function on the service');

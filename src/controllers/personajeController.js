@@ -23,6 +23,14 @@ router.get('/characters', Authenticate, async (req, res) => {
   return res.status(200).json(personaje);
 });
 
+router.get('/characters', Authenticate, async (req, res) => {
+  console.log(`This is a get operation`);
+  
+  const personaje = await PersonajeService.getPersonajeImaNomId();
+
+  return res.status(200).json(personaje);
+});
+
 router.get('/:id', Authenticate,  async (req, res) => {
   console.log(`Request URL Param: ${req.params.id}`);
   console.log(`This is a get operation`);
