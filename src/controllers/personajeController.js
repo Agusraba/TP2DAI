@@ -75,4 +75,13 @@ router.get('/:nombre', Authenticate,  async (req, res) => {
   return res.status(200).json(personaje);
 });
 
+  router.get('/detallePer/:id', Authenticate,  async (req, res) => {
+    console.log(`Request URL Param: ${req.params.id}`);
+    console.log(`This is a get operation`);
+  
+    const personaje = await PersonajeService.getPersonajeConPelAsociada(req.params.id);
+  
+    return res.status(200).json(personaje);
+});
+
 export default router;
