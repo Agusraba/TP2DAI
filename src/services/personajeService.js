@@ -49,7 +49,7 @@ export class personajeService {
         .query(`SELECT * FROM ${personajeTabla}`)
         const personaje = await pool.request()
         .input('id',sql.Int, id)
-        .query(`SELECT * FROM Peliculas.id=PeliculasxPersonaje.IdPeliculas and Personajes.id=PeliculasxPersonaje.IdPersonajes` );
+        .query(`SELECT * FROM  Peliculas.id=PeliculasxPersonaje.IdPeliculas and Personajes.id=PeliculasxPersonaje.IdPersonajes` );
         personaje.recordset[0].peliculas=response.recordset
     console.log(response)
     return personaje.recordset[0];

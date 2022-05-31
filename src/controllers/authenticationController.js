@@ -1,13 +1,14 @@
 import { Router } from 'express';
-import {authenticationService } from '../services/authenticationService.js';
+import {AuthenticationService } from '../services/authenticationService.js';
 
 const router = Router();
-const AuthenticationService = new autheticationService();
+const authenticationService = new AuthenticationService();
 
-router.get('', async (req, res) => {
+router.get('/login', async (req, res) => {
   console.log(`This is a get operation`);
 
-  const Auth = await authenticationService.getSignedToken();
+  const Auth = await authenticationService.getToken();
 
   return res.status(200).json(Auth);
 });
+export default router;
