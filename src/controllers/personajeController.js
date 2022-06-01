@@ -9,9 +9,12 @@ router.get('', Authenticate, async (req, res) => {
   console.log(`This is a get operation`);
   console.log("Nombre: ", req.query.nombre);
   console.log("Edad: ", req.query.edad);
-  const {nombre, edad} = req.query;
+  console.log("Peso: ", req.query.peso);
+  console.log("Serie: ", req.query.serie);
+
+  const {nombre, edad, peso, serie} = req.query;
   
-  const personaje = await PersonajeService.getPersonaje(nombre, edad);
+  const personaje = await PersonajeService.getPersonaje(nombre, edad, peso, serie);
 
   return res.status(200).json(personaje);
 });
@@ -78,7 +81,6 @@ router.get('/:nombre', Authenticate,  async (req, res) => {
   router.get('/detallePer/:id', Authenticate,  async (req, res) => {
     console.log(`Request URL Param: ${req.params.id}`);
     console.log(`This is a get operation`);
-  
     const personaje = await PersonajeService.getPersonajeConPelAsociada(req.params.id);
   
     return res.status(200).json(personaje);
