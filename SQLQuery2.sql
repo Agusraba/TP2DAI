@@ -1,14 +1,6 @@
 USE [DAI-Personajes]
 GO
-/****** Object:  User [Personajes]    Script Date: 11/5/2022 10:20:05 ******/
-CREATE USER [Personajes] FOR LOGIN [Personajes] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [alumno]    Script Date: 11/5/2022 10:20:05 ******/
-CREATE USER [alumno] FOR LOGIN [alumno] WITH DEFAULT_SCHEMA=[dbo]
-GO
-ALTER ROLE [db_owner] ADD MEMBER [Personajes]
-GO
-/****** Object:  Table [dbo].[Peliculas]    Script Date: 11/5/2022 10:20:05 ******/
+/****** Object:  Table [dbo].[Peliculas]    Script Date: 2/6/2022 11:54:33 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -19,14 +11,13 @@ CREATE TABLE [dbo].[Peliculas](
 	[Titulo] [varchar](max) NULL,
 	[FechaDeCreacion] [datetime] NULL,
 	[Calificacion] [int] NULL,
-	[PersonajesAsociados] [varchar](max) NULL,
  CONSTRAINT [PK_Peliculas] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PeliculasxPersonajes]    Script Date: 11/5/2022 10:20:05 ******/
+/****** Object:  Table [dbo].[PeliculasxPersonajes]    Script Date: 2/6/2022 11:54:33 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -41,7 +32,7 @@ CREATE TABLE [dbo].[PeliculasxPersonajes](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Personajes]    Script Date: 11/5/2022 10:20:05 ******/
+/****** Object:  Table [dbo].[Personajes]    Script Date: 2/6/2022 11:54:33 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -53,7 +44,6 @@ CREATE TABLE [dbo].[Personajes](
 	[Edad] [int] NOT NULL,
 	[Historia] [nchar](255) NOT NULL,
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[HistAsociadas] [varchar](max) NULL,
  CONSTRAINT [PK_Personajes] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -62,19 +52,23 @@ CREATE TABLE [dbo].[Personajes](
 GO
 SET IDENTITY_INSERT [dbo].[Peliculas] ON 
 
-INSERT [dbo].[Peliculas] ([Id], [Imagen], [Titulo], [FechaDeCreacion], [Calificacion], [PersonajesAsociados]) VALUES (1, N'B', N'Piratas del Caribe', CAST(N'2005-01-21T00:00:00.000' AS DateTime), 3, N'Deep')
-INSERT [dbo].[Peliculas] ([Id], [Imagen], [Titulo], [FechaDeCreacion], [Calificacion], [PersonajesAsociados]) VALUES (2, N'C', N'Harry Potter', CAST(N'2001-12-21T00:00:00.000' AS DateTime), 1, N'Radcliffe')
-INSERT [dbo].[Peliculas] ([Id], [Imagen], [Titulo], [FechaDeCreacion], [Calificacion], [PersonajesAsociados]) VALUES (3, N'D', N'Aviones 2', CAST(N'2011-01-01T00:00:00.000' AS DateTime), 5, N'carlos')
-INSERT [dbo].[Peliculas] ([Id], [Imagen], [Titulo], [FechaDeCreacion], [Calificacion], [PersonajesAsociados]) VALUES (4, N'E', N'El Agujero', CAST(N'1998-03-05T00:00:00.000' AS DateTime), 2, N'Bayardo')
+INSERT [dbo].[Peliculas] ([Id], [Imagen], [Titulo], [FechaDeCreacion], [Calificacion]) VALUES (1, N'B', N'Piratas del Caribe', CAST(N'2005-01-21T00:00:00.000' AS DateTime), 3)
+INSERT [dbo].[Peliculas] ([Id], [Imagen], [Titulo], [FechaDeCreacion], [Calificacion]) VALUES (2, N'R', N'Transformer', CAST(N'2005-02-03T03:00:00.000' AS DateTime), 3)
+INSERT [dbo].[Peliculas] ([Id], [Imagen], [Titulo], [FechaDeCreacion], [Calificacion]) VALUES (3, N'D', N'Aviones 2', CAST(N'2011-01-01T00:00:00.000' AS DateTime), 5)
+INSERT [dbo].[Peliculas] ([Id], [Imagen], [Titulo], [FechaDeCreacion], [Calificacion]) VALUES (4, N'E', N'El Agujero', CAST(N'1998-03-05T00:00:00.000' AS DateTime), 2)
 SET IDENTITY_INSERT [dbo].[Peliculas] OFF
+GO
+INSERT [dbo].[PeliculasxPersonajes] ([IdPersonajes], [IdPeliculas], [IdRelacion]) VALUES (1, 1, 1)
+INSERT [dbo].[PeliculasxPersonajes] ([IdPersonajes], [IdPeliculas], [IdRelacion]) VALUES (2, 2, 2)
+INSERT [dbo].[PeliculasxPersonajes] ([IdPersonajes], [IdPeliculas], [IdRelacion]) VALUES (3, 3, 3)
 GO
 SET IDENTITY_INSERT [dbo].[Personajes] ON 
 
-INSERT [dbo].[Personajes] ([Imagen], [Nombre], [Peso], [Edad], [Historia], [Id], [HistAsociadas]) VALUES (N'CgNpbWcQARgAMgsIABCABBCxAxCDATILCAAQgAQQsQMQgwEyBQgAEIAEMgsIABCABBCxAxCDATIFCAAQgAQyBQgAEIAEMgUIABCABDIFCAAQgAQyBQgAEIAEMgUIABCABDoHCAAQsQMQQzoKCAAQsQMQgwEQQzoICAAQgAQQsQM6CAgAELEDEIMBOgQIABBDUKgHWKUMYNQWaABwAHgAgAE6iAHOApIBATaYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ', N'Lionel Andres Messi                               ', 70, 34, N'Es el mejor jugador delmundo y uno de los mas grandes de la historia                                                                                                                                                                                           ', 1, NULL)
-INSERT [dbo].[Personajes] ([Imagen], [Nombre], [Peso], [Edad], [Historia], [Id], [HistAsociadas]) VALUES (N'B', N'carlos                                            ', 100, 15, N'AAAAAAAAAAAAA                                                                                                                                                                                                                                                  ', 2, NULL)
-INSERT [dbo].[Personajes] ([Imagen], [Nombre], [Peso], [Edad], [Historia], [Id], [HistAsociadas]) VALUES (N'CD', N'Deep                                              ', 50, 55, N'Piratas del Caribe                                                                                                                                                                                                                                             ', 3, NULL)
-INSERT [dbo].[Personajes] ([Imagen], [Nombre], [Peso], [Edad], [Historia], [Id], [HistAsociadas]) VALUES (N'DE', N'Radcliffe                                         ', 60, 40, N'Harry Potter                                                                                                                                                                                                                                                   ', 6, NULL)
-INSERT [dbo].[Personajes] ([Imagen], [Nombre], [Peso], [Edad], [Historia], [Id], [HistAsociadas]) VALUES (N'EF', N'Bayardo                                           ', 80, 60, N'El Agujero                                                                                                                                                                                                                                                     ', 7, NULL)
+INSERT [dbo].[Personajes] ([Imagen], [Nombre], [Peso], [Edad], [Historia], [Id]) VALUES (N'CgNpbWcQARgAMgsIABCABBCxAxCDATILCAAQgAQQsQMQgwEyBQgAEIAEMgsIABCABBCxAxCDATIFCAAQgAQyBQgAEIAEMgUIABCABDIFCAAQgAQyBQgAEIAEMgUIABCABDoHCAAQsQMQQzoKCAAQsQMQgwEQQzoICAAQgAQQsQM6CAgAELEDEIMBOgQIABBDUKgHWKUMYNQWaABwAHgAgAE6iAHOApIBATaYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ', N'Lionel Andres Messi                               ', 70, 34, N'Es el mejor jugador delmundo y uno de los mas grandes de la historia                                                                                                                                                                                           ', 1)
+INSERT [dbo].[Personajes] ([Imagen], [Nombre], [Peso], [Edad], [Historia], [Id]) VALUES (N'B', N'carlos                                            ', 100, 15, N'AAAAAAAAAAAAA                                                                                                                                                                                                                                                  ', 2)
+INSERT [dbo].[Personajes] ([Imagen], [Nombre], [Peso], [Edad], [Historia], [Id]) VALUES (N'CD', N'Deep                                              ', 50, 55, N'Piratas del Caribe                                                                                                                                                                                                                                             ', 3)
+INSERT [dbo].[Personajes] ([Imagen], [Nombre], [Peso], [Edad], [Historia], [Id]) VALUES (N'DE', N'Radcliffe                                         ', 60, 40, N'Harry Potter                                                                                                                                                                                                                                                   ', 6)
+INSERT [dbo].[Personajes] ([Imagen], [Nombre], [Peso], [Edad], [Historia], [Id]) VALUES (N'EF', N'Bayardo                                           ', 80, 60, N'El Agujero                                                                                                                                                                                                                                                     ', 7)
 SET IDENTITY_INSERT [dbo].[Personajes] OFF
 GO
 ALTER TABLE [dbo].[PeliculasxPersonajes]  WITH CHECK ADD  CONSTRAINT [FK_PeliculasxPersonajes_Peliculas] FOREIGN KEY([IdPeliculas])
