@@ -48,12 +48,5 @@ router.delete('/:id', Authenticate,  async (req, res) => {
   
     return res.status(200).json(peliculas);
 });
-router.post('', Authenticate,  async (req, res) => {
-    console.log(`This is a post operation`);
-  
-    const peliculas = await PeliculasService.createPersonaje(req.body);
-  
-    return res.status(201).json(peliculas);
-  });
 
 export default router;
