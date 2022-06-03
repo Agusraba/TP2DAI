@@ -26,14 +26,6 @@ router.get('/characters', Authenticate, async (req, res) => {
   return res.status(200).json(personaje);
 });
 
-router.get('/characters', Authenticate, async (req, res) => {
-  console.log(`This is a get operation`);
-  
-  const personaje = await PersonajeService.getPersonajeImaNomId();
-
-  return res.status(200).json(personaje);
-});
-
 router.get('/:id', Authenticate,  async (req, res) => {
   console.log(`Request URL Param: ${req.params.id}`);
   console.log(`This is a get operation`);
@@ -65,15 +57,6 @@ router.delete('/:id', Authenticate,  async (req, res) => {
   console.log(`This is a delete operation`);
 
   const personaje = await PersonajeService.deletePersonajeById(req.params.id);
-
-  return res.status(200).json(personaje);
-});
-
-router.get('/:nombre', Authenticate,  async (req, res) => {
-  console.log(`Request URL Param: ${req.params.nombre}`);
-  console.log(`This is a get operation`);
-
-  const personaje = await PersonajeService.getPersonajeByEdad(req.params.nombre);
 
   return res.status(200).json(personaje);
 });

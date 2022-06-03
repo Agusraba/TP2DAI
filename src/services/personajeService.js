@@ -62,6 +62,7 @@ export class personajeService {
 
     getPersonajeById = async (id) => {
         console.log('This is a function on the service');
+        const pool = await sql.connect(config);
         const response = await pool.request()
             .input('id', sql.Int, id)
             .query(`SELECT * from ${personajeTabla} where id = @id`);

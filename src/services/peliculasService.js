@@ -83,7 +83,7 @@ export class peliculasService {
             .input('id', sql.Int, id)
             .query(`SELECT ${personajeTabla}.Nombre, ${personajeTabla}.Id, ${personajeTabla}.Imagen FROM ${personajeTabla} INNER JOIN ${intermediaTabla} ON PeliculasxPersonajes.IdPeliculas = Personajes.Id INNER JOIN ${peliculaTabla} ON Peliculas.Id = PeliculasxPersonajes.IdPersonajes WHERE Peliculas.Id = @id`);
 
-        response.recordset[0].peliculas = personaje.recordset
+        response.recordset[0].personaje = personaje.recordset
         console.log(response)
         return response.recordset[0];
     }

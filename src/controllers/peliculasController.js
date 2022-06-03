@@ -41,7 +41,7 @@ router.delete('/:id', Authenticate,  async (req, res) => {
 });
 
 
-  router.get('/detallePer/:id', Authenticate,  async (req, res) => {
+  router.get('/detallePel/:id', Authenticate,  async (req, res) => {
     console.log(`Request URL Param: ${req.params.id}`);
     console.log(`This is a get operation`);
     const peliculas = await PeliculasService.getPeliculaConPerAsociado(req.params.id);
